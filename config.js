@@ -1,14 +1,14 @@
 module.exports = {
   OWNER_IDS: ["744344345167134800"], // Bot owner ID's
-  SUPPORT_SERVER: "", // Your bot support server
+  SUPPORT_SERVER: "https://discord.gg/VjPZJWuqYk", // Your bot support server
   PREFIX_COMMANDS: {
     ENABLED: true, // Enable/Disable prefix commands
     DEFAULT_PREFIX: "nc!", // Default prefix for the bot
   },
   INTERACTIONS: {
     SLASH: true, // Should the interactions be enabled
-    CONTEXT: false, // Should contexts be enabled
-    GLOBAL: false, // Should the interactions be registered globally
+    CONTEXT: true, // Should contexts be enabled
+    GLOBAL: true, // Should the interactions be registered globally
     TEST_GUILD_ID: "801175148286836806", // Guild ID where the interactions should be registered. [** Test you commands here first **]
   },
   EMBED_COLORS: {
@@ -36,7 +36,7 @@ module.exports = {
   },
 
   DASHBOARD: {
-    enabled: false, // enable or disable dashboard
+    enabled: true, // enable or disable dashboard
     baseURL: "http://localhost:8080", // base url
     failureURL: "http://localhost:8080", // failure redirect url
     port: "8080", // port to run the bot on
@@ -59,8 +59,8 @@ module.exports = {
     // Refer to https://github.com/freyacodes/Lavalink to host your own lavalink server
     LAVALINK_NODES: [
       {
-        host: "localhost",
-        port: 2333,
+        host: "lavalink.jirayu.net",
+        port: 13592,
         password: "youshallnotpass",
         id: "Local Node",
         secure: false,
@@ -77,11 +77,11 @@ module.exports = {
 
   IMAGE: {
     ENABLED: false,
-    BASE_API: "https://strangeapi.hostz.me/api",
+    BASE_API: "Njc2OWI3NTQ2Y2E0MDc5ODk0MDhkYTky.OJbMp2zNCyHIxyz5oPnQ94bARXG975wXHObgEBdvs",
   },
 
   INVITE: {
-    ENABLED: false,
+    ENABLED: true,
   },
 
   MODERATION: {
