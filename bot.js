@@ -6,13 +6,30 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
+// Define estas constantes al principio de tu archivo
+const ERROR_CHANNEL_ID = process.env.ERROR_CHANNEL_ID; // Define esto en tu .env
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
 
-// Agrega estas constantes al principio de tu archivo
-const ERROR_CHANNEL_ID = process.env.ERROR_CHANNEL_ID; // Define esto en tu .env
+// Importa los extenders
+require("@helpers/extenders/Message");
+require("@helpers/extenders/Guild");
+require("@helpers/extenders/GuildChannel");
+
+const { checkForUpdates } = require("@helpers/BotUtils");
+const { initializeMongoose } = require("@src/database/mongoose");
+const { BotClient } = require("@src/structures");
+const { validateConfiguration } = require("@helpers/Validator");
+
+validateConfiguration();
+
+// Inicializa el cliente
+const client = new BotClient();
+client.loadCommands("src/commands");
+client.loadContexts("src/contexts");
+client.loadEvents("src/events");
 
 // Manejador de comandos
 client.on('messageCreate', async (message) => {
@@ -42,50 +59,28 @@ client.on('messageCreate', async (message) => {
   }
 });
 
-
-
-
-// register extenders
-require("@helpers/extenders/Message");
-require("@helpers/extenders/Guild");
-require("@helpers/extenders/GuildChannel");
-
-const { checkForUpdates } = require("@helpers/BotUtils");
-const { initializeMongoose } = require("@src/database/mongoose");
-const { BotClient } = require("@src/structures");
-const { validateConfiguration } = require("@helpers/Validator");
-
-validateConfiguration();
-
-// initialize client
-const client = new BotClient();
-client.loadCommands("src/commands");
-client.loadContexts("src/contexts");
-client.loadEvents("src/events");
-
-// find unhandled promise rejections
-process.on("unhandledRejection", (err) => client.logger.error(`Unhandled exception`, err));
+// Manejo de promesas no manejadas
+process.on("unhandledRejection", (err) => console.error(`Unhandled exception`, err));
 
 (async () => {
-  // check for updates
+  // Verifica actualizaciones
   await checkForUpdates();
 
-  // start the dashboard
+  // Inicia el dashboard
   if (client.config.DASHBOARD.enabled) {
-    client.logger.log("Launching dashboard");
+    console.log("Lanzando dashboard");
     try {
       const { launch } = require("@root/dashboard/app");
-
-      // let the dashboard initialize the database
+      // Deja que el dashboard inicialice la base de datos
       await launch(client);
     } catch (ex) {
-      client.logger.error("Failed to launch dashboard", ex);
+      console.error("Error al lanzar el dashboard", ex);
     }
   } else {
-    // initialize the database
+    // Inicializa la base de datos
     await initializeMongoose();
   }
 
-  // start the client
+  // Inicia el cliente
   await client.login(process.env.BOT_TOKEN);
 })();
