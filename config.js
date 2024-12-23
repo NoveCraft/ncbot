@@ -58,10 +58,10 @@ module.exports = {
     // Add any number of lavalink nodes here
     // Refer to https://github.com/freyacodes/Lavalink to host your own lavalink server
     LAVALINK_NODES: [
-      {
-        host: "lavalink.jirayu.net",
-        port: 13592,
-        password: "youshallnotpass",
+      { 
+        host: "lavav3.prplmoe.me",
+        port: 1164,
+        password: "prplmoe.me",
         id: "Local Node",
         secure: false,
       },
