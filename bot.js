@@ -6,6 +6,24 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
+
+// Agrega estas constantes al principio de tu archivo
+const ERROR_CHANNEL_ID = process.env.ERROR_CHANNEL_ID; // Asegúrate de definir esto en tu .env
+
+// Manejador de errores
+process.on("unhandledRejection", async (err) => {
+  client.logger.error(`Unhandled exception`, err);
+  
+  // Envía el mensaje de error al canal específico
+  const channel = await client.channels.fetch(ERROR_CHANNEL_ID);
+  if (channel) {
+    channel.send(`Se ha producido un error: ${err.message}`);
+  } else {
+    console.error("No se pudo encontrar el canal de errores.");
+  }
+});
+
+
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
