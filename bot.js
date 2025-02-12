@@ -73,7 +73,6 @@ process.on("unhandledRejection", (err) => console.error(`Unhandled exception`, e
   if (client.config.DASHBOARD.enabled) {
     console.log("Lanzando dashboard");
     try {
-      const { launch } = require("@root/dashboard/app");
       // Deja que el dashboard inicialice la base de datos
       const { launch } = require("@root/dashboard/app");
       await launch(client);
