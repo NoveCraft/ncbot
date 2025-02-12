@@ -1,34 +1,30 @@
-require("dotenv").config();
-require("module-alias/register");
+import 'dotenv/config';
+import 'module-alias/register';
+import express from 'express';
 
-const express = require('express');
 const app = express();
-
 const PORT = process.env.PORT || 3000;
 
 // Define estas constantes al principio de tu archivo
 const ERROR_CHANNEL_ID = process.env.ERROR_CHANNEL_ID; // Define esto en tu .env
 
-/////////////////////////////
-const { EmbedBuilder } = require('discord.js');
-
-
+//////////////////////////////
 
 
 //////////////////////////////
 app.listen(PORT, () => {
-  console.log(Servidor corriendo en el puerto ${PORT});
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
 
 // Importa los extenders
-require("@HELPERs/extenders/Message");
-require("@HELPERs/extenders/Guild");
-require("@HELPERs/extenders/GuildChannel");
+require("@helpers/extenders/Message");
+require("@helpers/extenders/Guild");
+require("@helpers/extenders/GuildChannel");
 
-const { checkForUpdates } = require("@HELPERs/BotUtils");
+const { checkForUpdates } = require("@helpers/BotUtils");
 const { initializeMongoose } = require("@src/database/mongoose");
 const { BotClient } = require("@src/structures");
-const { validateConfiguration } = require("@HELPERs/Validator");
+const { validateConfiguration } = require("@helpers/Validator");
 
 validateConfiguration();
 
@@ -54,12 +50,12 @@ client.on('messageCreate', async (message) => {
     // await handleCommand(message);
   } catch (error) {
     functionStatus = 'err'; // Cambia el estado a error si ocurre una excepción
-    console.error(Error al ejecutar el comando: ${error.message});
+    console.error(`Error al ejecutar el comando: ${error.message}`);
   } finally {
     // Envía la interacción al canal de errores
     const errorChannel = await client.channels.fetch(ERROR_CHANNEL_ID);
     if (errorChannel) {
-      errorChannel.send(**Interacción del Bot:**\nUsuario: ${userMention} (ID: ${userId})\nServidor: ${serverId}\nComando: ${commandUsed}\nEstado: ${functionStatus});
+      errorChannel.send(`**Interacción del Bot:**\nUsuario: ${userMention} (ID: ${userId})\nServidor: ${serverId}\nComando: ${commandUsed}\nEstado: ${functionStatus}`);
     } else {
       console.error("No se pudo encontrar el canal de errores.");
     }
@@ -67,7 +63,7 @@ client.on('messageCreate', async (message) => {
 });
 
 // Manejo de promesas no manejadas
-process.on("unhandledRejection", (err) => console.error(Unhandled exception, err));
+process.on("unhandledRejection", (err) => console.error(`Unhandled exception`, err));
 
 (async () => {
   // Verifica actualizaciones
